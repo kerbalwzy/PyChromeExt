@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>PyChromeExt</title>
+		<style type="text/css">
+			#cmd-box {
+				position: absolute;
+				bottom: 10px;
+				display: block;
+				width: 99%;
+				height: 30px;
+				line-height: 30px;
+			}
+
+			#cmd-box input {
+				width: 68%;
+				height: 25px;
+				color: white;
+				background-color: black;
+			}
+
+			#cmd-box button {
+				height: 25px;
+				padding-left: 0.625rem;
+				padding-right: 0.625rem;
+			}
+
+			#created-tabs-box {
+				display: inline-block;
+				width: 100%;
+				overflow: auto;
+				border: gray 1px solid;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="text-align: center">
+			<h1>PyChromeExt</h1>
+		</div>
+		<div>
+			<div id="created-tabs-box">
+				<h2>由插件创建的Tabs列表:</h2>
+				<ul id="created-tabs"></ul>
+			</div>
+		</div>
+		<div id="cmd-box">
+			<input type="text" id="cmd" value="" placeholder="请输入命令">
+			<button id="send-cmd">发送命令</button>
+			<button id="flush-created-tabs">刷新Tabs列表</button>
+		</div>
+		<script type="text/javascript" src="/js/index/index.js"></script>
+	</body>
+</html>

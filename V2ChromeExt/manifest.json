@@ -1,0 +1,33 @@
+{
+	"manifest_version": 2,
+	"name": "PyChromeExt",
+	"version": "0.0.1",
+	"description": "PyChromeExt自动化框架Chrome插件部分, 使用Manifest V2",
+	"homepage_url": "https://github.com/kerbalwzy/PyChromeExt",
+	"browser_action": {
+		"default_title": "PyChromeExt"
+	},
+	"background": {
+		"scripts": [
+			"js/socket.io.js",
+			"js/background/websocket.js",
+			"js/background/window.js",
+			"js/background/tab.js",
+
+			"js/background/main.js"
+		]
+	},
+	"content_scripts": [{
+		"matches": ["<all_urls>"],
+		"js": ["js/content/main.js"],
+		"run_at": "document_end"
+	}],
+	"options_page": "html/options.html",
+	"options_ui": {
+		"page": "html/options.html",
+		"chrome_style": true
+	},
+	"permissions": [
+		"tabs"
+	]
+}
