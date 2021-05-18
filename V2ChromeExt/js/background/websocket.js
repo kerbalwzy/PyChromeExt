@@ -16,16 +16,27 @@ function pongCallback() {
 		sum += pingPongTimes[i];
 	}
 	pingPongWait = Math.round(10 * sum / pingPongTimes.length) / 10
+	if (PyChromeExtIndexTab) {
+		chrome.tabs.sendMessage(PyChromeExtIndexTab.id, {
+			cmd: "flushNetSpeed",
+			value: pingPongWait
+		})
+	}
 }
 
 function CreateSocketCli() {
-	let socketCli = io.connect('http://127.0.0.1:9410');
+	let socketCli = io('http://localhost:9410', {
+		autoConnect: false
+	});
 	//
 	socketCli.on('pong', pongCallback)
 	socketCli.on('connect', function() {
-		console.log('connected')
+		console.log('connected success')
 		ping()
-		window.setInterval(ping, 10000);
+		socketCli.PingInterval = window.setInterval(ping, 3000);
+	})
+	socketCli.on('close', function() {
+		clearInterval(socketCli.PingInterval)
 	})
 	return socketCli
 }

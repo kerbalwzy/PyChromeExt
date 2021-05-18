@@ -3,7 +3,6 @@
 # @Time: 2021/5/15
 # 
 
-import os
 
 from flask import Flask, session, request, copy_current_request_context
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
@@ -19,13 +18,15 @@ app.config['SECRET_KEY'] = 'SinRiu KerBalWzy'
 socket_io = SocketIO(app, cors_allowed_origins="*")
 
 
-def background_thread():
-    """Example of how to send server generated events to clients."""
-    count = 0
-    while True:
-        socket_io.sleep(10)
-        count += 1
-        socket_io.emit('my_response', {'data': 'Server generated event', 'count': count})
+@socket_io.event
+def ping():
+    emit('pong')
+
+
+@socket_io.event
+def connect():
+    print(request.remote_addr)
+    pass
 
 
 @socket_io.event
@@ -93,18 +94,8 @@ def disconnect_request():
          callback=can_disconnect)
 
 
-@socket_io.event
-def ping():
-    emit('pong')
-
-
-@socket_io.on('disconnect')
-def test_disconnect():
-    print('Client disconnected', request.sid)
-
-
 def run_backend_server(debug=False):
-    socket_io.run(app, debug=debug, use_reloader=False, port=9410)
+    socket_io.run(app, debug=debug, use_reloader=False, port=9410, host="0.0.0.0")
 
 
 if __name__ == '__main__':

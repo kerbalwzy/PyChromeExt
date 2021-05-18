@@ -13,6 +13,7 @@
 			"js/background/websocket.js",
 			"js/background/window.js",
 			"js/background/tab.js",
+			"js/background/ip.js",
 
 			"js/background/main.js"
 		]
