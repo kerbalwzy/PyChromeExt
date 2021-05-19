@@ -1,6 +1,6 @@
-let pingTime;
-let pingPongTimes = [];
-let pingPongWait = 0
+var pingTime;
+var pingPongTimes = [];
+var pingPongWait = 0
 
 function ping() {
 	pingTime = (new Date).getTime();
@@ -8,11 +8,11 @@ function ping() {
 }
 
 function pongCallback() {
-	let latency = (new Date).getTime() - pingTime;
+	var latency = (new Date).getTime() - pingTime;
 	pingPongTimes.push(latency);
 	pingPongTimes = pingPongTimes.slice(-30); // keep last 30 samples
-	let sum = 0;
-	for (let i = 0; i < pingPongTimes.length; i++) {
+	var sum = 0;
+	for (var i = 0; i < pingPongTimes.length; i++) {
 		sum += pingPongTimes[i];
 	}
 	pingPongWait = Math.round(10 * sum / pingPongTimes.length) / 10
@@ -25,7 +25,7 @@ function pongCallback() {
 }
 
 function CreateSocketCli() {
-	let socketCli = io('http://localhost:9410', {
+	var socketCli = io('http://localhost:9410', {
 		autoConnect: false
 	});
 	//

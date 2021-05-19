@@ -11,7 +11,6 @@
 		"scripts": [
 			"js/socket.io.js",
 			"js/background/websocket.js",
-			"js/background/window.js",
 			"js/background/tab.js",
 			"js/background/ip.js",
 
@@ -21,7 +20,7 @@
 	"content_scripts": [{
 		"matches": ["<all_urls>"],
 		"js": ["js/content/main.js"],
-		"run_at": "document_end"
+		"run_at": "document_idle"
 	}],
 	"options_page": "html/options.html",
 	"options_ui": {
@@ -29,6 +28,8 @@
 		"chrome_style": true
 	},
 	"permissions": [
-		"tabs"
+		"tabs",
+		"http://*/*",
+		"https://*/*"
 	]
 }
