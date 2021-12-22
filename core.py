@@ -1,21 +1,19 @@
 # -*- coding:utf-8 -*-
 # @Author: wzy
 # @Time: 2021/5/15
-# 
-
+#
+import os
+from multiprocessing import queues, Lock
 
 from flask import Flask, session, request, copy_current_request_context
 from flask_socketio import SocketIO, emit, join_room, leave_room, close_room, rooms, disconnect
 
-# Set this variable to "threading", "eventlet" or "gevent" to test the
-# different async modes, or leave it set to None for the application to choose
-# the best option based on installed packages.
-# async_mode = threading
-
 app = Flask(import_name=__name__)
-
-app.config['SECRET_KEY'] = 'SinRiu KerBalWzy'
-socket_io = SocketIO(app, cors_allowed_origins="*")
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "PyChromeExt")
+socket_io = SocketIO(app, cors_allowed_origins=os.environ.get("CORS_ALLOWED_ORIGINS", "*"))
+cmd_channel = queues.Queue()
+thread = None
+thread_lock = Lock()
 
 
 @socket_io.event
@@ -23,10 +21,22 @@ def ping():
     emit('pong')
 
 
+def background_cmd_thread():
+    # 不断向客户端发送命令
+    count = 0
+    while True:
+        socket_io.sleep(10)
+        count += 1
+        socket_io.emit('my_response',
+                       {'data': 'Server generated event', 'count': count})
+
+
 @socket_io.event
 def connect():
-    print(request.remote_addr)
-    pass
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socket_io.start_background_task(background_cmd_thread)
 
 
 @socket_io.event
